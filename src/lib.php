@@ -211,3 +211,61 @@ class CodeRepositories {
 }
 
 //+---------------------------------------------------------------------------
+//++ GoogleCharts class ------------------------------------------------------
+
+class GoogleCharts {
+
+    private $namespace;
+    private $renderText = '';
+    private $pieChartCount = 0;
+
+    public function __construct($name=Null, $loadApi=True)
+    {
+        if ($loadApi)
+            $this->renderText .= '<script src="https://www.google.com/jsapi">'
+                . '</script><script>google.load("visualization", "1", '
+                . '{packages:["corechart"]});</script>';
+
+        if ($name)
+            $this->namespace = $name;
+        else
+            $this->namespace = sha1(mt_rand());
+
+        $this->renderText .= "\n<script>"
+            . "\n\tgoogle.setOnLoadCallback(drawCharts_$this->namespace);"
+            . "\n\tfunction drawCharts_$this->namespace() {";
+    }
+
+    public function render()
+    {
+        return "$this->renderText\n\t}\n</script>";
+    }
+
+    public function pie($elementId, $dataArray, $title,
+                        $label_x, $label_y, $options=array())
+    {
+        $this->renderText .= "\n\t\t".'(window.pieChart_' . $this->namespace
+            . '_' . ++$this->pieChartCount . ' = function() {'
+            . "\n\t\t\tvar data = google.visualization.arrayToDataTable(["
+            . "['$label_x', '$label_y'],";
+
+        foreach($dataArray as $k => $v) {
+            is_int($v) || is_float($v) ? $value = $v : $value = "'$v'";
+            $this->renderText .= "['$k', $value],";
+        }
+
+        $this->renderText .= "]);\n\t\t\t".'new google.visualization.PieChart('
+            . 'document.getElementById("' . $elementId
+            . '")).draw(data, {title: "' . $title . '"';
+
+        foreach ($options as $k => $v) {
+            is_int($v) || is_float($v) ? $value = $v : $value = "'$v'";
+            $this->renderText .= ", $k: $value";
+        }
+
+        $this->renderText .= ' });'
+            . "\n\t\t})();";
+    }
+}
+
+//+---------------------------------------------------------------------------
