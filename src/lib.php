@@ -45,9 +45,9 @@ function durationOrDate($timestamp)
 }
 
 
-function makeHexColor($anything)
+function makeHexColor($hashable)
 {
-    return substr(str_replace(range('c', 'z'), '', hash('sha512', $anything)),
+    return substr(str_replace(range('c', 'z'), '', hash('sha512', $hashable)),
                   0, 6);
 }
 
@@ -55,7 +55,8 @@ function makeHexColor($anything)
 //++ CodeRepositories class --------------------------------------------------
 
 class CodeRepositories {
-    static function sortDim2($array, $subkey) {
+    static function sortDim2($array, $subkey)
+    {
         $seq = array();
         $ret = array();
 
@@ -68,8 +69,27 @@ class CodeRepositories {
         return $ret;
     }
 
-    static function loadTime($init_microtime) {
+    static function loadTime($init_microtime)
+    {
         return floor((microtime(true) - $init_microtime) * 1000);
+    }
+
+    static function diffLanguages($data, $exclude=array())
+    {
+        /* Differentiate languages */
+        $languages = array();
+        foreach ($data as $p) {
+            if (!isset($languages[$p['language']]))
+                $languages[$p['language']] = 0;
+            $languages[$p['language']]++;
+        }
+
+        foreach ($exclude as $x) {
+            if (array_key_exists($x, $languages))
+                unset($languages[$x]);
+        }
+        ksort($languages);
+        return $languages;
     }
 
     public $github_user;

@@ -38,7 +38,8 @@ if (!isset($_SESSION['repositories'])) {
 
 $data = $_SESSION['repositories'];
 
-/* echo '<pre>'; print_r($data); exit; // DEBUGGING */
+/* echo '<pre>'; print_r(CodeRepositories::diffLanguages($data)); */
+/* echo ''; print_r($data); exit; // DEBUGGING */
 
 $css = array(
     '//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css',
