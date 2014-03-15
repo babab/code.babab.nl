@@ -24,7 +24,7 @@ span.language {
     background-color: #444;
     color: #fff;
 }
-.col-md-6:hover {
+.project-container:hover {
     background-color: #444;
     color: #fff;
 }
@@ -44,6 +44,10 @@ span.language {
 .jcont a:hover {
     text-decoration: none;
     color: #eee;
+}
+
+#languages-pie-chart {
+    height: 390px;
 }
 
 /*

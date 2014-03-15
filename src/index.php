@@ -55,7 +55,14 @@ $css = array(
     <meta charset="UTF-8" />
 <?php
     foreach ($css as $url)
-        echo '<link rel="stylesheet" href="' . $url . '" />';
+        echo '<link rel="stylesheet" href="' . $url . '" />' . "\n";
+
+    $charts = new GoogleCharts('codebabab');
+    $exclude = array('', '~/. & #!', 'Scheme');
+    $charts->pie('languages-pie-chart',
+                 CodeRepositories::diffLanguages($data, $exclude),
+                 'Languages', 'Languages', 'Projects');
+    echo $charts->render();
 ?>
     <title>code.babab.nl | open-source projects of Benjamin Althues</title>
   </head>
@@ -98,7 +105,9 @@ $css = array(
     </div>
 
     <div class="container">
+    <div class="col-md-6"><div id="languages-pie-chart"></div></div>
 <?php
+
     $i = 0;
     foreach ($data as $project) {
         $bb_url = '';
@@ -126,7 +135,7 @@ $css = array(
 
         // still in foreach block
 ?>
-        <div class="col-md-6">
+        <div class="col-md-6 project-container">
           <h2>
             <?php if(isset($project['gh']) && $project['gh']['fork']): ?>
               <i class="fa fa-code-fork"></i>
