@@ -24,6 +24,15 @@ Front:
 - Font Awesome
 - Open Sans font
 
+## Run in docker
+
+    docker build -t code.babab.nl .
+    docker run -d -p 8000:80 --name code.babab.nl code.babab.nl:latest
+
+    docker stop code.babab.nl
+    docker start code.babab.nl
+
+
 ## License
 
 Copyright (c) 2014 Benjamin Althues <benjamin@babab.nl>
